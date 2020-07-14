@@ -33,4 +33,5 @@ build/
 
 #### vue ####
 vue-admin/node_modules/
+web/node_modules/
 
