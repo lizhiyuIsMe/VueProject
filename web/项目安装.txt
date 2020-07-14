@@ -1,0 +1,159 @@
+安装node要使用的插件
+1.chinese--》英文翻译成中文
+2.eslint --》 代码检测
+3.live server --》 可以认为是小型的tomcat 安装后可以通过鼠标右键点击后运行html
+4.安装 vetur插件  查看vue
+5.安装 vuehelper 看vue-cli vuex
+
+安装node --》 可以包含js引擎同时有简单的服务端的api
+然后安装npm --》 可以认为是java中的maven,方便下载依赖和移除
+#在命令提示符输入 npm -v 可查看当前npm版本
+npm -v
+#查看npm配置信息
+npm config list
+#修改npm镜像
+npm config set registry https://registry.npm.taobao.org 
+#在项目目下创建执行npm init，这样就创建了个npm项目
+这时创建了package.json文件 可以理解为java中的pom文件
+
+
+
+
+
+#然后下载开发依赖     --save-dev代表只在开发环境中使用   --global代表任何项目都可以使用
+#eslint是代码开发使用用来检测代码的工具
+npm install --save-dev eslint   
+安装后在设置中找到eslint，然后点击setting.json设置
+然后修改json文件为
+
+
+这时出现了package-lock.json文件 这个文件可以看到引入依赖的版本
+
+#webpack可以将js打包成一个文件，同时还有小型服务器
+#如果没有权限可以使用管理员运行
+npm install --global webpack
+#安装后查看版本号
+webpack -v
+
+#安装babel,node中有javascript引擎但是只能执行es5，不能执行es6，将es6转成es5需要babel 使用es5开发不方便
+npm install -g babel-cli
+#查看是否安装成功
+babel --version
+#下载转码器(也就是转码规则)
+npm install -D babel-preset-es2015
+#配置babel
+Babel的配置文件是.babelrc，存放在项目的根目录下，该文件用来设置转码规则和插件，presets字段设定转码规则
+#.babelrc文件写入如下信息
+{
+    "presets": ["es2015"],
+    "plugins": []
+}
+#使用转码器将src文件夹下的js文件转成es5 并复制到dist文件夹下
+babel src -d dist
+#运行转码后的js文件
+#再次强调下 node不能运行es6，只能运行es5
+node dist/test.js
+
+我们传输项目使用不用传输node_modules文件夹，这个文件夹可以比喻成java中的lib文件夹
+没有node_modules文件夹,可以直接通过npm install 命令就可以通过package.json文件下载依赖了
+
+
+模块化开发就是通过定义组件，然后引入组件，使用组件
+模块化开发有两种规范
+1.CommonJS模块化规范 (此种语法不用es6,所以不用转码,直接就能通过node运行)
+//1 创建common.js 文件内容如下
+exports.info = function (str) {
+    document.write(str)
+}
+//2 创建utils.js 文件内容如下
+exports.add = function (a, b) {
+    return a + b
+}
+//3 创建main.js  文件内容如下
+const common = require('./common')
+const utils = require('./utils')
+common.info('Hello world!' + utils.add(100, 200))
+
+
+
+2.ES6模块化规范
+//1在teacherApi.js中定义一个组件
+export default {
+    getList() {
+        console.log('获取讲师列表')
+    },
+    save() {
+        console.log('保存讲师')
+    }
+}
+//2.在teacherComponent.js中引入这个组件然后调用组件中方法
+import teacher from "./teacherApi.js"
+teacher.getList()
+teacher.save()
+//3.使用node运行转码后的teacherComponent.js
+node teacherComponent.js
+
+--------------------另一种es6组件开发---------------------------------------------
+//1在teacherApi.js中定义一个组件
+export function getList() {
+    console.log('获取讲师列表2')
+}
+export function save() {
+    console.log('保存讲师2')
+}
+//2.在teacherComponent.js中引入这个组件然后调用组件中方法
+src/teacherComponent.js：
+import {getList, save} from "./teacherApi.js"
+getList()
+save()
+//使用node运行转码后的teacherComponent.js
+
+
+
+
+
+使用webpackage对js进行打包
+项目根目录创建webpack.config.js文件,文件内容如下const path = require("path") //Node.js内置模块
+module.exports = {
+    entry: './src/main.js', //配置入口文件
+    output: {
+        path: path.resolve(__dirname, './dist'), //输出路径，__dirname：当前文件所在路径
+        filename: 'bundle.js' //输出文件
+    }
+}
+然后执行命令进行打包
+webpack --mode=development
+也可以配置项目的npm运行命令，修改package.json文件
+"scripts": {
+    "dev": "webpack --mode=development",
+    "prod": "webpack --mode=production"
+ }
+然后可以运行命令
+npm run dev #开发打包
+或
+npm run prod #生产打包
+
+
+对css进行打包
+Webpack 本身只能处理 JavaScript 模块，如果要处理其他类型的文件，就需要使用 loader 进行转换
+1.安装Loader插件
+npm install -D style-loader css-loader 
+2.修改webpack.config.js,为了将css也进行打包   代码如下
+const path = require("path"); //Node.js内置模块
+module.exports = {
+    //...,
+    output:{
+        //其他配置
+    },
+    module: {
+        rules: [  
+            {  
+                test: /\.css$/,    //打包规则应用到以css结尾的文件上
+                use: ['style-loader', 'css-loader']
+            }  
+        ]  
+    }
+}
+3.然后在生成的js文件中引入css文件即可,引入代码如下
+require('./style.css')
+
