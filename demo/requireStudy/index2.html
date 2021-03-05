@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--1、导入配置文件-->
+    <script src="require.js"></script>
+    <script>
+        /*2、配置jquery文件 对应模块为jquery*/
+        require.config({
+            paths :{
+                "jquery":["https://cdn.staticfile.org/jquery/1.10.2/jquery.min"]
+            }
+        })
+        /*导入配置文件*/
+        require(["jquery"], function ($) {
+                $(function () {
+                    console.log('jquery加载成功')
+                })
+            }
+        );
+    </script>
+</head>
+<body>
+
+</body>
+</html>

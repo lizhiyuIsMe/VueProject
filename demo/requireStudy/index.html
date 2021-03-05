@@ -1,0 +1,18 @@
+<html>
+<body>
+<!--1、导入配置文件-->
+<script src="require.js"></script>
+<script>
+    /*2、创建test1和test2文件*/
+    /*3、导入test1和test2组件*/
+    require(['test1','test2'], function(test1,test2) {
+        test1.say()
+        /*4、当加载完组件后执行*/
+        console.log('123213')
+    });
+</script>
+commomjs  的模块化导入导出方法
+</body>
+<head>
+</head>
+</html>

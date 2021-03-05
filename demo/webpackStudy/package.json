@@ -1,0 +1,20 @@
+{
+  "name": "webpackstudy",
+  "version": "1.0.0",
+  "description": "安装 npm install webpack -g   不建议全局安装\r 查看 webpack -v\r 安装 npm install webpack-cli -g 不建议全局安装\r 创建打包配置文件 webpack.config.js(配置要打包的文件、以及打包完要输出的地方)\r 打包 webpack  （然后在dist下就看到了自己打包好的文件）",
+  "main": "require.js",
+  "dependencies": {
+    "css-loader": "^5.1.1",
+    "html-webpack-plugin": "^5.2.0",
+    "sass-loader": "^11.0.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.24.2",
+    "webpack-cli": "^4.5.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
